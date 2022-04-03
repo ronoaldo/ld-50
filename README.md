@@ -25,18 +25,19 @@ skills and your Droid from there.
             - [ ] 1 character for each party
             - [ ] 3 skills to use each round
             - [ ] 10 rounds limit per battle
-        - [ ] Second phase - 3x3 championship battles
-            - [ ] 3 characters for each party
-            - [ ] Passive skills from all party members
-            - [ ] 20 rounds limit per battle
         - [ ] Character evolution
             - [ ] Blue starting droid give to player
             - [ ] Droids can upgrade by adding up to 6 Chips (runes)
             - [ ] Chips improve stats and the overall Droid power
             - [ ] Each unit has 3 optional skills and 1 passive
             - [ ] Each skill has a cooldown that requires eletricity to trigger
+    - [ ] PvP Mode (Arena Battles)
+        - [ ] Second phase - 3x3 championship battles
+            - [ ] 3 characters for each party
+            - [ ] Passive skills from all party members
+            - [ ] 20 rounds limit per battle
 - [ ] Artwork
-    - [ ] Game Title Screen
+    - [x] Game Title Screen
     - [ ] Each droid is represented as a unit in the player inventory
     - [ ] Droids will have improving look as they are upgraded
     - [ ] Droid rarity is visible as the droid portrait decoration
@@ -44,6 +45,8 @@ skills and your Droid from there.
 - [ ] Sound
     - [ ] Droid sounds will be motors, lasers and metal sfx
     - [ ] BGM will be techno during battles, easy going on game screns
+        - [ ] Intro BGM
+        - [x] Battle BGM
 
 ## Testing out
 

@@ -7,6 +7,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/audio"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 
 	"github.com/ronoaldo/ld-50/assets"
 )
@@ -28,14 +29,16 @@ var (
 )
 
 type Game struct {
-	screen GameScreen
+	screen      GameScreen
+	tickCounter int
 
 	audioContext *audio.Context
 	audioPlayer  *audio.Player
+
+	entities []*Entity
 }
 
 func NewGame() (g *Game, err error) {
-
 	g = &Game{}
 	g.audioContext = audio.NewContext(assets.SampleRate)
 	g.audioPlayer, err = g.audioContext.NewPlayer(assets.BackgroundMusic)
@@ -43,14 +46,28 @@ func NewGame() (g *Game, err error) {
 		return nil, err
 	}
 	g.audioPlayer.SetVolume(0.3)
-	g.audioPlayer.Play()
+	// g.audioPlayer.Play()
+
+	g.entities = append(g.entities, NewEntity("Blue lvl1", assets.BlueL1))
 	return
 }
 
 func (g *Game) Update() error {
+	// TODO(ronoaldo): overflow??
+	g.tickCounter++
+
+	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
+		x, y := ebiten.CursorPosition()
+		log.Printf("Mouse pressed at (%v,%v)", x, y)
+	}
 	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
 		return gameExitError
 	}
+
+	for _, e := range g.entities {
+		e.Update()
+	}
+
 	return nil
 }
 
@@ -68,6 +85,10 @@ func (g *Game) TitleScreen(screen *ebiten.Image) {
 		Filter: ebiten.FilterLinear,
 	}
 	screen.DrawImage(assets.Title, op)
+
+	for _, e := range g.entities {
+		e.Draw(screen)
+	}
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
@@ -91,6 +112,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	ebiten.SetWindowSize(width, height)
 	ebiten.SetWindowTitle("Droid Battles")
 	ebiten.SetWindowIcon([]image.Image{assets.BlueL1})

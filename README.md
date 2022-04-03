@@ -47,6 +47,12 @@ skills and your Droid from there.
 
 ## Testing out
 
+Install dependencies
+
+    sudo apt install libc6-dev libglu1-mesa-dev libgl1-mesa-dev \
+        libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev \
+        libxxf86vm-dev libasound2-dev pkg-config
+
     go run github.com/ronoaldo/ld-50@latest
 
 ## Updating assets

@@ -76,8 +76,11 @@ func (e *Entity) Update() {
 func (e *Entity) Draw(screen *ebiten.Image) {
 	geom := ebiten.GeoM{}
 	geom.Translate(e.x, e.y)
+	geom.Scale(3.0, 3.0)
+
 	op := &ebiten.DrawImageOptions{
-		GeoM: geom,
+		GeoM:   geom,
+		Filter: ebiten.FilterNearest,
 	}
 
 	// Vertical Sprite

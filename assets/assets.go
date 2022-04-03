@@ -27,6 +27,26 @@ var InventoryBackground *ebiten.Image
 var blueL1_png []byte
 var BlueL1 *ebiten.Image
 
+//go:embed BlueL2.png
+var blueL2_png []byte
+var BlueL2 *ebiten.Image
+
+//go:embed BlueL3.png
+var blueL3_png []byte
+var BlueL3 *ebiten.Image
+
+//go:embed BlueL4.png
+var blueL4_png []byte
+var BlueL4 *ebiten.Image
+
+//go:embed BlueL5.png
+var blueL5_png []byte
+var BlueL5 *ebiten.Image
+
+//go:embed BlueL6.png
+var blueL6_png []byte
+var BlueL6 *ebiten.Image
+
 //go:embed BackgroundMusic.mp3
 var backgroundMusic_mp3 []byte
 var BackgroundMusic io.Reader
@@ -53,6 +73,11 @@ func init() {
 	InventoryBackground = load(inventoryBackground_png)
 
 	BlueL1 = load(blueL1_png)
+	BlueL2 = load(blueL2_png)
+	BlueL3 = load(blueL3_png)
+	BlueL4 = load(blueL4_png)
+	BlueL5 = load(blueL5_png)
+	BlueL6 = load(blueL6_png)
 
 	BackgroundMusic = loadMP3(backgroundMusic_mp3)
 }

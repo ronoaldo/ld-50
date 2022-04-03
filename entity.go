@@ -8,7 +8,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
-var TextureSize = 64
+var TextureSize = 3 * 64
 
 type Entity struct {
 	name    string
@@ -81,7 +81,6 @@ func (e *Entity) Draw(screen *ebiten.Image) {
 		return
 	}
 	geom := ebiten.GeoM{}
-	geom.Scale(3.0, 3.0)
 	geom.Translate(e.x, e.y)
 
 	op := &ebiten.DrawImageOptions{

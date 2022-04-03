@@ -16,14 +16,14 @@ func NewPlayer(g *Game) *Player {
 	p.game = g
 	p.inv = NewInventory(p)
 	p.inv.AddDroid(&Droid{
-		Name:   "Blue",
+		Name:   "Blue Lvl 1",
 		Level:  1,
 		Sprite: assets.BlueL1,
 	})
 	p.inv.AddDroid(&Droid{
-		Name:   "Blue",
-		Level:  1,
-		Sprite: assets.BlueL1,
+		Name:   "Blue Lvl 2",
+		Level:  2,
+		Sprite: assets.BlueL2,
 	})
 	return p
 }

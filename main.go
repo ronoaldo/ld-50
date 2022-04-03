@@ -112,7 +112,7 @@ func (g *Game) InventoryScreen(screen *ebiten.Image) {
 	}
 	screen.DrawImage(assets.InventoryBackground, op)
 
-	// TODO: draw player droids UI
+	// TODO: convert hard-coded values into constants
 	x, y := 39, 189
 	for _, droid := range g.player.inv.droids {
 		droid.e.x, droid.e.y = float64(x), float64(y)

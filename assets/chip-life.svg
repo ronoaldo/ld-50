@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Creator: CorelDRAW -->
-
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -11,13 +9,13 @@
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    style="clip-rule:evenodd;fill-rule:evenodd;image-rendering:optimizeQuality;shape-rendering:geometricPrecision;text-rendering:geometricPrecision"
    xml:space="preserve"
-   viewBox="0 0 63.999999 63.999999"
+   viewBox="0 0 192 192"
    version="1.1"
    id="svg40"
    sodipodi:docname="chip-life.svg"
-   width="64"
-   height="64"
-   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"><sodipodi:namedview
+   width="192"
+   height="192"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15)"><sodipodi:namedview
    pagecolor="#ffffff"
    bordercolor="#666666"
    borderopacity="1"
@@ -26,17 +24,18 @@
    guidetolerance="10"
    inkscape:pageopacity="0"
    inkscape:pageshadow="2"
-   inkscape:window-width="1920"
-   inkscape:window-height="1016"
+   inkscape:window-width="1396"
+   inkscape:window-height="964"
    id="namedview42"
    showgrid="false"
-   inkscape:zoom="5.2226485"
-   inkscape:cx="20.18211"
-   inkscape:cy="21.14913"
-   inkscape:window-x="0"
-   inkscape:window-y="27"
-   inkscape:window-maximized="1"
-   inkscape:current-layer="svg40" />
+   inkscape:zoom="1.3056621"
+   inkscape:cx="-86.715118"
+   inkscape:cy="101.70676"
+   inkscape:window-x="1791"
+   inkscape:window-y="147"
+   inkscape:window-maximized="0"
+   inkscape:current-layer="svg40"
+   inkscape:document-rotation="0" />
  <defs
    id="defs4">
   <style
@@ -52,7 +51,7 @@
  </defs>
  <g
    id="Diagram"
-   transform="matrix(3.7486406,0,0,3.7735878,2.0546968,1.8554109)">
+   transform="matrix(11.043182,0,0,11.116818,7.7836389,7.1954117)">
   <g
    id="_89638448">
    <path
@@ -304,8 +303,8 @@
          rdf:resource="http://creativecommons.org/ns#Distribution" /><cc:permits
          rdf:resource="http://creativecommons.org/ns#DerivativeWorks" /></cc:License></rdf:RDF></metadata><g
    id="layer1"
-   transform="matrix(0.04958679,0,0,0.04943358,13.547289,10.637568)"><path
+   transform="matrix(0.14607854,0,0,0.14562907,41.639856,33.067247)"><path
      id="path7"
      d="m 263.42,235.15 c -66.24,0 -120,53.76 -120,120 0,134.75 135.93,170.08 228.56,303.3 87.57,-132.4 228.56,-172.85 228.56,-303.3 0,-66.24 -53.76,-120 -120,-120 -48.05,0 -89.4,28.37 -108.56,69.18 -19.16,-40.81 -60.52,-69.18 -108.56,-69.18 z"
      inkscape:connector-curvature="0"
-     style="fill:#e60000;stroke:#000000;stroke-width:18.70000076" /></g></svg>
+     style="fill:#e60000;stroke:#000000;stroke-width:18.7" /></g></svg>

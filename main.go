@@ -119,6 +119,13 @@ func (g *Game) InventoryScreen(screen *ebiten.Image) {
 		droid.e.invisible = false
 		x += 192 + 15 // space width + offset
 	}
+
+	x, y = 83, 866
+	for _, chip := range g.player.inv.chips {
+		chip.e.x, chip.e.y = float64(x), float64(y)
+		chip.e.invisible = false
+		x += 192 + 30 // chip slot width + offset
+	}
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {

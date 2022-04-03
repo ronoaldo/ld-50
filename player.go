@@ -25,5 +25,10 @@ func NewPlayer(g *Game) *Player {
 		Level:  2,
 		Sprite: assets.BlueL2,
 	})
+	p.inv.AddChip(NewChip())
+	p.inv.AddChip(NewChip())
+	p.inv.AddChip(NewChip())
+	p.inv.AddChip(NewChip())
+	p.inv.AddChip(NewChip())
 	return p
 }

@@ -47,6 +47,18 @@ var BlueL5 *ebiten.Image
 var blueL6_png []byte
 var BlueL6 *ebiten.Image
 
+//go:embed chip-life.png
+var chipLife_png []byte
+var ChipLife *ebiten.Image
+
+//go:embed chip-speed.png
+var chipSpeed_png []byte
+var ChipSpeed *ebiten.Image
+
+//go:embed chip-strength.png
+var chipStrength_png []byte
+var ChipStrength *ebiten.Image
+
 //go:embed BackgroundMusic.mp3
 var backgroundMusic_mp3 []byte
 var BackgroundMusic io.Reader
@@ -78,6 +90,10 @@ func init() {
 	BlueL4 = load(blueL4_png)
 	BlueL5 = load(blueL5_png)
 	BlueL6 = load(blueL6_png)
+
+	ChipLife = load(chipLife_png)
+	ChipStrength = load(chipStrength_png)
+	ChipSpeed = load(chipSpeed_png)
 
 	BackgroundMusic = loadMP3(backgroundMusic_mp3)
 }

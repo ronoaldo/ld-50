@@ -6,6 +6,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/ronoaldo/ld-50/assets"
 )
 
 func init() {
@@ -19,15 +20,13 @@ type Stats struct {
 }
 
 type Droid struct {
-	Name   string
-	Level  int
-	Sprite *ebiten.Image
-
+	Name      string
+	Level     int
 	BaseStats Stats
+	Chips     [6]Chip
 
-	Chips [6]Chip
-
-	e *Entity
+	Sprite *ebiten.Image
+	e      *Entity
 }
 
 func (d *Droid) Stats() Stats {
@@ -50,6 +49,9 @@ func (d *Droid) Stats() Stats {
 type Chip struct {
 	ID           uuid.UUID
 	StatModifier Stats
+
+	Sprite *ebiten.Image
+	e      *Entity
 }
 
 func NewChip() *Chip {
@@ -58,6 +60,8 @@ func NewChip() *Chip {
 	c.StatModifier.HP = rand.Intn(11)
 	c.StatModifier.Strengh = rand.Intn(11)
 	c.StatModifier.Speed = rand.Intn(11)
+	// TODO(ronoaldo): randomize chip sprite
+	c.Sprite = assets.ChipSpeed
 	return c
 }
 
@@ -79,4 +83,11 @@ func (i *Inventory) AddDroid(d *Droid) {
 	d.e = NewEntity(d.Name, d.Sprite)
 	d.e.invisible = true
 	i.player.game.entities = append(i.player.game.entities, d.e)
+}
+
+func (i *Inventory) AddChip(c *Chip) {
+	i.chips = append(i.chips, c)
+	c.e = NewEntity(c.ID.String(), c.Sprite)
+	c.e.invisible = true
+	i.player.game.entities = append(i.player.game.entities, c.e)
 }

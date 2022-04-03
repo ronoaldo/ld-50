@@ -18,8 +18,9 @@ skills and your Droid from there.
     - [x] Start Game with title screen
         - [x] Exit with ESC key
     - [ ] Show player inventory
-        - [ ] Show inventory screen with ENTER key
-        - [ ] Show all droids the player has
+        - [x] Show inventory screen with ENTER key
+        - [x] Go back from inventory to Title when ESC key is pressed
+        - [ ] Show all droids the player has unlocked
     - [ ] Battle Mecanics
     - [ ] PvE Mode (Unit upgrades, story mode)
         - [ ] First phase - 1x1 unofficial battles

@@ -15,6 +15,9 @@ skills and your Droid from there.
 ## Task List
 
 - [ ] Game Mechanics
+    - [x] Start Game with title screen
+    - [ ] Show player inventory
+    - [ ] Battle Mecanics
     - [ ] PvE Mode (Unit upgrades, story mode)
         - [ ] First phase - 1x1 unofficial battles
             - [ ] 1 character for each party
@@ -31,6 +34,7 @@ skills and your Droid from there.
             - [ ] Each unit has 3 optional skills and 1 passive
             - [ ] Each skill has a cooldown that requires eletricity to trigger
 - [ ] Artwork
+    - [ ] Game Title Screen
     - [ ] Each droid is represented as a unit in the player inventory
     - [ ] Droids will have improving look as they are upgraded
     - [ ] Droid rarity is visible as the droid portrait decoration

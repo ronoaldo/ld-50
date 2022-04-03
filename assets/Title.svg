@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1920"
+   height="1080"
+   viewBox="0 0 508 285.75"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15)"
+   sodipodi:docname="Title.svg">
+  <defs
+     id="defs2">
+    <rect
+       x="213.71566"
+       y="203.87619"
+       width="85.318987"
+       height="26.08982"
+       id="rect2922" />
+    <rect
+       x="67.72237"
+       y="34.567858"
+       width="307.80547"
+       height="169.31901"
+       id="rect1339" />
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient1315">
+      <stop
+         style="stop-color:#13889b;stop-opacity:1;"
+         offset="0"
+         id="stop1311" />
+      <stop
+         style="stop-color:#86cfda;stop-opacity:1"
+         offset="1"
+         id="stop1313" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient1307">
+      <stop
+         style="stop-color:#0c5460;stop-opacity:1;"
+         offset="0"
+         id="stop1303" />
+      <stop
+         style="stop-color:#13889b;stop-opacity:1"
+         offset="1"
+         id="stop1305" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient1301">
+      <stop
+         style="stop-color:#083a42;stop-opacity:1"
+         offset="0"
+         id="stop1297" />
+      <stop
+         style="stop-color:#0c5460;stop-opacity:1"
+         offset="1"
+         id="stop1299" />
+    </linearGradient>
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="-56.456118 : 177.13356 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="251.69525 : 129.9913 : 1"
+       inkscape:persp3d-origin="254 : 95.25 : 1"
+       id="perspective1035" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1301"
+       id="linearGradient1289"
+       x1="253.28996"
+       y1="2.0206413"
+       x2="253.28996"
+       y2="69.021118"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="scale(1,1.0128575)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1307"
+       id="linearGradient1309"
+       x1="250.08748"
+       y1="73.094887"
+       x2="250.08748"
+       y2="134.58955"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,1.002317,0,-0.1593878)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1315"
+       id="linearGradient1317"
+       x1="258.88965"
+       y1="145.71342"
+       x2="258.88965"
+       y2="199.79703"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.5203864"
+     inkscape:cx="964.37359"
+     inkscape:cy="601.01515"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer2"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     units="px"
+     showguides="true"
+     inkscape:window-width="1961"
+     inkscape:window-height="1240"
+     inkscape:window-x="1475"
+     inkscape:window-y="41"
+     inkscape:window-maximized="0">
+    <inkscape:grid
+       type="xygrid"
+       id="grid1219" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Background"
+     inkscape:groupmode="layer"
+     id="layer1"
+     sodipodi:insensitive="true">
+    <rect
+       style="fill:url(#linearGradient1289);fill-opacity:1;stroke:none;stroke-width:0.246898;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect1221"
+       width="508"
+       height="69.676155"
+       x="0"
+       y="0" />
+    <rect
+       style="fill:url(#linearGradient1309);fill-opacity:1;stroke:none;stroke-width:0.24561;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect1221-3"
+       width="508"
+       height="68.95105"
+       x="0"
+       y="68.791672" />
+    <rect
+       style="fill:url(#linearGradient1317);fill-opacity:1;stroke:none;stroke-width:0.245326;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect1221-3-6"
+       width="508"
+       height="68.791664"
+       x="0"
+       y="137.58333" />
+    <rect
+       style="fill:#86cfda;stroke:none;stroke-width:0.263522;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect1221-3-6-7"
+       width="508"
+       height="79.375008"
+       x="0"
+       y="206.375" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Text">
+    <text
+       xml:space="preserve"
+       id="text1337"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:50.8px;line-height:1.25;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;shape-inside:url(#rect1339);fill:#228c3a;fill-opacity:1;stroke:#abdee5;"
+       transform="translate(32.883501,28.716442)"
+       x="103.43554"
+       y="0"><tspan
+         x="145.16455"
+         y="79.514452"><tspan
+           style="text-align:center;text-anchor:middle">Droid
+</tspan></tspan><tspan
+         x="114.58037"
+         y="143.01445"><tspan
+           style="text-align:center;text-anchor:middle">Battles</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       id="text2920"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14.1111px;line-height:1.25;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;shape-inside:url(#rect2922);fill:#ffc107;fill-opacity:1;stroke:#05285b;"
+       transform="translate(17.684624,9.6647894)"><tspan
+         x="213.71484"
+         y="216.36197"><tspan
+           style="shape-inside:url(#rect2922)">Start</tspan></tspan></text>
+  </g>
+</svg>

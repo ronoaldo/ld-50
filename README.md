@@ -16,6 +16,8 @@ skills and your Droid from there.
 
 - [ ] Game Mechanics
     - [x] Start Game with title screen
+        - [x] Exit with ESC key
+        - [ ] Start game with ENTER key
     - [ ] Show player inventory
     - [ ] Battle Mecanics
     - [ ] PvE Mode (Unit upgrades, story mode)

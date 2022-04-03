@@ -10,6 +10,10 @@ github.com/go-gl/glfw/v3.3/glfw/glfw/src
 # github.com/hajimehoshi/ebiten/v2 v2.2.5
 ## explicit; go 1.15
 github.com/hajimehoshi/ebiten/v2
+github.com/hajimehoshi/ebiten/v2/audio
+github.com/hajimehoshi/ebiten/v2/audio/internal/convert
+github.com/hajimehoshi/ebiten/v2/audio/internal/go2cpp
+github.com/hajimehoshi/ebiten/v2/audio/mp3
 github.com/hajimehoshi/ebiten/v2/internal/affine
 github.com/hajimehoshi/ebiten/v2/internal/atlas
 github.com/hajimehoshi/ebiten/v2/internal/buffered
@@ -42,6 +46,21 @@ github.com/hajimehoshi/ebiten/v2/internal/thread
 github.com/hajimehoshi/ebiten/v2/internal/uidriver/glfw
 github.com/hajimehoshi/ebiten/v2/internal/uidriver/js
 github.com/hajimehoshi/ebiten/v2/internal/uidriver/mobile
+# github.com/hajimehoshi/go-mp3 v0.3.2
+## explicit; go 1.14
+github.com/hajimehoshi/go-mp3
+github.com/hajimehoshi/go-mp3/internal/bits
+github.com/hajimehoshi/go-mp3/internal/consts
+github.com/hajimehoshi/go-mp3/internal/frame
+github.com/hajimehoshi/go-mp3/internal/frameheader
+github.com/hajimehoshi/go-mp3/internal/huffman
+github.com/hajimehoshi/go-mp3/internal/imdct
+github.com/hajimehoshi/go-mp3/internal/maindata
+github.com/hajimehoshi/go-mp3/internal/sideinfo
+# github.com/hajimehoshi/oto/v2 v2.1.0-alpha.2
+## explicit; go 1.14
+github.com/hajimehoshi/oto/v2
+github.com/hajimehoshi/oto/v2/internal/oboe
 # github.com/jezek/xgb v0.0.0-20210312150743-0e0f116e1240
 ## explicit
 github.com/jezek/xgb

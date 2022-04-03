@@ -1,14 +1,17 @@
 package main
 
 import (
+	"errors"
 	"image"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/audio"
 
 	"github.com/ronoaldo/ld-50/assets"
 )
 
+// Game Options
 var (
 	width  int = 1280
 	height int = 720
@@ -20,11 +23,34 @@ var (
 	TitleScreen GameScreen = 0
 )
 
+var (
+	gameExitError = errors.New("user exited the game. what a looser")
+)
+
 type Game struct {
 	screen GameScreen
+
+	audioContext *audio.Context
+	audioPlayer  *audio.Player
+}
+
+func NewGame() (g *Game, err error) {
+
+	g = &Game{}
+	g.audioContext = audio.NewContext(assets.SampleRate)
+	g.audioPlayer, err = g.audioContext.NewPlayer(assets.BackgroundMusic)
+	if err != nil {
+		return nil, err
+	}
+	g.audioPlayer.SetVolume(0.3)
+	g.audioPlayer.Play()
+	return
 }
 
 func (g *Game) Update() error {
+	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
+		return gameExitError
+	}
 	return nil
 }
 
@@ -61,11 +87,16 @@ func adaptScale(src, dst *ebiten.Image) ebiten.GeoM {
 }
 
 func main() {
+	game, err := NewGame()
+	if err != nil {
+		log.Fatal(err)
+	}
 	ebiten.SetWindowSize(width, height)
 	ebiten.SetWindowTitle("Droid Battles")
 	ebiten.SetWindowIcon([]image.Image{assets.BlueL1})
 	ebiten.SetWindowResizable(true)
-	if err := ebiten.RunGame(&Game{}); err != nil {
+	ebiten.SetWindowClosingHandled(false)
+	if err := ebiten.RunGame(game); err != nil && err != gameExitError {
 		log.Fatal(err)
 	}
 }

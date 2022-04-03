@@ -8,11 +8,14 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
+var TextureSize = 64
+
 type Entity struct {
 	name    string
 	texture *ebiten.Image
 
-	counter int
+	invisible   bool
+	tickCounter int
 
 	frameCount   int
 	currentFrame int
@@ -28,7 +31,7 @@ func NewEntity(name string, texture *ebiten.Image) *Entity {
 	e := &Entity{
 		name:       name,
 		texture:    texture,
-		frameCount: texture.Bounds().Max.Y / 64,
+		frameCount: texture.Bounds().Max.Y / TextureSize,
 		vx:         2,
 		vy:         2,
 	}
@@ -70,13 +73,16 @@ func (e *Entity) Update() {
 		}
 	}
 
-	e.counter++
+	e.tickCounter++
 }
 
 func (e *Entity) Draw(screen *ebiten.Image) {
+	if e.invisible {
+		return
+	}
 	geom := ebiten.GeoM{}
-	geom.Translate(e.x, e.y)
 	geom.Scale(3.0, 3.0)
+	geom.Translate(e.x, e.y)
 
 	op := &ebiten.DrawImageOptions{
 		GeoM:   geom,
@@ -88,7 +94,7 @@ func (e *Entity) Draw(screen *ebiten.Image) {
 	//          [64, 64]
 	// [0,64*frame]
 	//          [64, 64*(frame+1)]
-	framePos := (e.counter / 6) % e.frameCount
-	frame := image.Rect(0, 64*framePos, 64, 64*(framePos+1))
+	framePos := (e.tickCounter / 6) % e.frameCount
+	frame := image.Rect(0, TextureSize*framePos, TextureSize, TextureSize*(framePos+1))
 	screen.DrawImage(e.texture.SubImage(frame).(*ebiten.Image), op)
 }

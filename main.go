@@ -14,15 +14,16 @@ import (
 
 // Game Options
 var (
-	width  int = 1280
-	height int = 720
+	width  int = 1920
+	height int = 1080
 )
 
+// GameScreen indicates the current displayed game screen.
 type GameScreen int
 
 var (
-	TitleScreen     GameScreen = 0
-	InventoryScreen GameScreen = 1
+	GameScreenTitle     GameScreen = 0
+	GameScreenInventory GameScreen = 1
 )
 
 var (
@@ -36,6 +37,7 @@ type Game struct {
 	audioContext *audio.Context
 	audioPlayer  *audio.Player
 
+	player   *Player
 	entities []*Entity
 }
 
@@ -48,8 +50,8 @@ func NewGame() (g *Game, err error) {
 	}
 	g.audioPlayer.SetVolume(0.3)
 	// g.audioPlayer.Play()
+	g.player = NewPlayer(g)
 
-	g.entities = append(g.entities, NewEntity("Blue lvl1", assets.BlueL1))
 	return
 }
 
@@ -64,16 +66,16 @@ func (g *Game) Update() error {
 
 	// ESC
 	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-		if g.screen == InventoryScreen {
-			g.screen = TitleScreen
+		if g.screen == GameScreenInventory {
+			g.screen = GameScreenTitle
 		} else {
 			return gameExitError
 		}
 	}
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
-		if g.screen == TitleScreen {
-			g.screen = InventoryScreen
+		if g.screen == GameScreenTitle {
+			g.screen = GameScreenInventory
 		}
 	}
 
@@ -86,51 +88,41 @@ func (g *Game) Update() error {
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	switch g.screen {
-	case TitleScreen:
+	case GameScreenTitle:
 		g.TitleScreen(screen)
-	case InventoryScreen:
+	case GameScreenInventory:
 		g.InventoryScreen(screen)
 	}
-}
-
-func (g *Game) TitleScreen(screen *ebiten.Image) {
-	geom := adaptScale(assets.Title, screen)
-	op := &ebiten.DrawImageOptions{
-		GeoM:   geom,
-		Filter: ebiten.FilterLinear,
-	}
-	screen.DrawImage(assets.Title, op)
 
 	for _, e := range g.entities {
 		e.Draw(screen)
 	}
 }
 
-func (g *Game) InventoryScreen(screen *ebiten.Image) {
-	geom := adaptScale(assets.Title, screen)
+func (g *Game) TitleScreen(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{
-		GeoM:   geom,
+		Filter: ebiten.FilterLinear,
+	}
+	screen.DrawImage(assets.Title, op)
+}
+
+func (g *Game) InventoryScreen(screen *ebiten.Image) {
+	op := &ebiten.DrawImageOptions{
 		Filter: ebiten.FilterLinear,
 	}
 	screen.DrawImage(assets.InventoryBackground, op)
 
 	// TODO: draw player droids UI
+	x, y := 39, 189
+	for _, droid := range g.player.inv.droids {
+		droid.e.x, droid.e.y = float64(x), float64(y)
+		droid.e.invisible = false
+		x += 192 + 15 // space width + offset
+	}
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
 	return width, height
-}
-
-func adaptScale(src, dst *ebiten.Image) ebiten.GeoM {
-	srcd := src.Bounds()
-	dstd := dst.Bounds()
-
-	scalingX := float64(dstd.Max.X) / float64(srcd.Max.X)
-	scalingY := float64(dstd.Max.Y) / float64(srcd.Max.Y)
-
-	geom := ebiten.GeoM{}
-	geom.Scale(float64(scalingX), float64(scalingY))
-	return geom
 }
 
 func main() {
@@ -139,7 +131,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	ebiten.SetWindowSize(width, height)
+	ebiten.SetWindowSize(1280, 720)
 	ebiten.SetWindowTitle("Droid Battles")
 	ebiten.SetWindowIcon([]image.Image{assets.BlueL1})
 	ebiten.SetWindowResizable(true)

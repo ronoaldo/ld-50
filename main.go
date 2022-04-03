@@ -49,7 +49,7 @@ func NewGame() (g *Game, err error) {
 		return nil, err
 	}
 	g.audioPlayer.SetVolume(0.3)
-	// g.audioPlayer.Play()
+	g.audioPlayer.Play()
 	g.player = NewPlayer(g)
 
 	return

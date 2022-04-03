@@ -1,4 +1,4 @@
-# Droid Battles
+# Droid Battles | Ludum Dare 50
 
 Droids were created initially to help us with daily tasks, like cleaning up the
 house or driving us to work. Today, they are also used to build up Droid Teams
@@ -41,4 +41,13 @@ skills and your Droid from there.
 
 ## Testing out
 
-    go run github.com/ronoaldo/ld50
+    go run github.com/ronoaldo/ld-50@latest
+
+## Updating assets
+
+After making changes to the assets/*.svg files, it is needed to update the
+corresponding PNG ones. This can be done using `go generate`, but it is required
+that you have `librsvg2-bin` installed.
+
+    sudo apt-get install -yq librsvg2-bin
+    go generate ./...

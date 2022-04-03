@@ -38,3 +38,7 @@ skills and your Droid from there.
 - [ ] Sound
     - [ ] Droid sounds will be motors, lasers and metal sfx
     - [ ] BGM will be techno during battles, easy going on game screns
+
+## Testing out
+
+    go run github.com/ronoaldo/ld50

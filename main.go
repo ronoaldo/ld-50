@@ -6,7 +6,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 
-	"github.com/ronoaldo/ld50/assets"
+	"github.com/ronoaldo/ld-50/assets"
 )
 
 var (

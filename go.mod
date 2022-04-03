@@ -1,4 +1,4 @@
-module github.com/ronoaldo/ld50
+module github.com/ronoaldo/ld-50
 
 go 1.18
 

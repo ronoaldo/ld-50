@@ -2,7 +2,10 @@ module github.com/ronoaldo/ld-50
 
 go 1.18
 
-require github.com/hajimehoshi/ebiten/v2 v2.2.5
+require (
+	github.com/google/uuid v1.3.0
+	github.com/hajimehoshi/ebiten/v2 v2.2.5
+)
 
 require (
 	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20210727001814-0db043d8d5be // indirect

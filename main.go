@@ -21,7 +21,8 @@ var (
 type GameScreen int
 
 var (
-	TitleScreen GameScreen = 0
+	TitleScreen     GameScreen = 0
+	InventoryScreen GameScreen = 1
 )
 
 var (
@@ -60,8 +61,20 @@ func (g *Game) Update() error {
 		x, y := ebiten.CursorPosition()
 		log.Printf("Mouse pressed at (%v,%v)", x, y)
 	}
-	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
-		return gameExitError
+
+	// ESC
+	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		if g.screen == InventoryScreen {
+			g.screen = TitleScreen
+		} else {
+			return gameExitError
+		}
+	}
+
+	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+		if g.screen == TitleScreen {
+			g.screen = InventoryScreen
+		}
 	}
 
 	for _, e := range g.entities {
@@ -75,6 +88,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	switch g.screen {
 	case TitleScreen:
 		g.TitleScreen(screen)
+	case InventoryScreen:
+		g.InventoryScreen(screen)
 	}
 }
 
@@ -89,6 +104,17 @@ func (g *Game) TitleScreen(screen *ebiten.Image) {
 	for _, e := range g.entities {
 		e.Draw(screen)
 	}
+}
+
+func (g *Game) InventoryScreen(screen *ebiten.Image) {
+	geom := adaptScale(assets.Title, screen)
+	op := &ebiten.DrawImageOptions{
+		GeoM:   geom,
+		Filter: ebiten.FilterLinear,
+	}
+	screen.DrawImage(assets.InventoryBackground, op)
+
+	// TODO: draw player droids UI
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {

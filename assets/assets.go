@@ -19,6 +19,10 @@ var SampleRate int = 44100
 var title_png []byte
 var Title *ebiten.Image
 
+//go:embed InventoryBackground.png
+var inventoryBackground_png []byte
+var InventoryBackground *ebiten.Image
+
 //go:embed BlueL1.png
 var blueL1_png []byte
 var BlueL1 *ebiten.Image
@@ -45,7 +49,10 @@ func loadMP3(b []byte) (r io.Reader) {
 }
 
 func init() {
-	BlueL1 = load(blueL1_png)
 	Title = load(title_png)
+	InventoryBackground = load(inventoryBackground_png)
+
+	BlueL1 = load(blueL1_png)
+
 	BackgroundMusic = loadMP3(backgroundMusic_mp3)
 }

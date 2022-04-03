@@ -49,9 +49,9 @@ skills and your Droid from there.
 
 Install dependencies
 
-    sudo apt install libc6-dev libglu1-mesa-dev libgl1-mesa-dev \
+    sudo apt install -yq libc6-dev libglu1-mesa-dev libgl1-mesa-dev \
         libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev \
-        libxxf86vm-dev libasound2-dev pkg-config
+        libxxf86vm-dev libasound2-dev librsvg2-bin pkg-config 
 
     go run github.com/ronoaldo/ld-50@latest
 
@@ -61,5 +61,4 @@ After making changes to the assets/*.svg files, it is needed to update the
 corresponding PNG ones. This can be done using `go generate`, but it is required
 that you have `librsvg2-bin` installed.
 
-    sudo apt-get install -yq librsvg2-bin
     go generate ./...

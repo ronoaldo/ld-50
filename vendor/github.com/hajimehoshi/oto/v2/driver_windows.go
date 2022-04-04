@@ -15,6 +15,7 @@
 package oto
 
 import (
+	"errors"
 	"fmt"
 	"sync"
 	"unsafe"
@@ -75,6 +76,7 @@ type context struct {
 	buf32 []float32
 
 	players *players
+	err     atomicError
 
 	cond *sync.Cond
 }
@@ -107,8 +109,7 @@ func newContext(sampleRate, channelNum, bitDepthInBytes int) (*context, chan str
 
 	// TOOD: What about using an event instead of a callback? PortAudio and other libraries do that.
 	w, err := waveOutOpen(f, waveOutOpenCallback)
-	const elementNotFound = 1168
-	if e, ok := err.(*winmmError); ok && e.errno == elementNotFound {
+	if errors.Is(err, windows.ERROR_NOT_FOUND) {
 		// TODO: No device was found. Return the dummy device (#77).
 		// TODO: Retry to open the device when possible.
 		return nil, nil, err
@@ -137,6 +138,10 @@ func (c *context) Suspend() error {
 	c.cond.L.Lock()
 	defer c.cond.L.Unlock()
 
+	if err := c.err.Load(); err != nil {
+		return err.(error)
+	}
+
 	if err := waveOutPause(c.waveOut); err != nil {
 		return err
 	}
@@ -147,10 +152,21 @@ func (c *context) Resume() error {
 	c.cond.L.Lock()
 	defer c.cond.L.Unlock()
 
+	if err := c.err.Load(); err != nil {
+		return err.(error)
+	}
+
 	// TODO: Ensure at least one header is queued?
 
 	if err := waveOutRestart(c.waveOut); err != nil {
 		return err
+	}
+	return nil
+}
+
+func (c *context) Err() error {
+	if err := c.err.Load(); err != nil {
+		return err.(error)
 	}
 	return nil
 }
@@ -164,7 +180,7 @@ func (c *context) isHeaderAvailable() bool {
 	return false
 }
 
-var waveOutOpenCallback = windows.NewCallbackCDecl(func(hwo, uMsg, dwInstance, dwParam1, dwParam2 uintptr) uintptr {
+var waveOutOpenCallback = windows.NewCallback(func(hwo, uMsg, dwInstance, dwParam1, dwParam2 uintptr) uintptr {
 	// Queuing a header in this callback might not work especially when a headset is connected or disconnected.
 	// Just signal the condition vairable and don't do other things.
 	const womDone = 0x3bd
@@ -175,18 +191,21 @@ var waveOutOpenCallback = windows.NewCallbackCDecl(func(hwo, uMsg, dwInstance, d
 	return 0
 })
 
-func (c *context) waitUntilHeaderAvailable() {
+func (c *context) waitUntilHeaderAvailable() bool {
 	c.cond.L.Lock()
 	defer c.cond.L.Unlock()
 
-	for !c.isHeaderAvailable() {
+	for !c.isHeaderAvailable() && c.err.Load() == nil {
 		c.cond.Wait()
 	}
+	return c.err.Load() == nil
 }
 
 func (c *context) loop() {
 	for {
-		c.waitUntilHeaderAvailable()
+		if !c.waitUntilHeaderAvailable() {
+			return
+		}
 		c.appendBuffers()
 	}
 }
@@ -195,9 +214,10 @@ func (c *context) appendBuffers() {
 	c.cond.L.Lock()
 	defer c.cond.L.Unlock()
 
-	for i := range c.buf32 {
-		c.buf32[i] = 0
+	if c.err.Load() != nil {
+		return
 	}
+
 	c.players.read(c.buf32)
 
 	for _, h := range c.headers {
@@ -206,18 +226,14 @@ func (c *context) appendBuffers() {
 		}
 
 		if err := h.Write(c.buf32); err != nil {
-			// This error can happen when e.g. a new HDMI connection is detected (#51).
-			const errorNotFound = 1168
-			if werr := err.(*winmmError); werr.fname == "waveOutWrite" {
-				switch {
-				case werr.mmresult == mmsyserrNomem:
-					continue
-				case werr.errno == errorNotFound:
-					// TODO: Retry later.
-				}
+			switch {
+			case errors.Is(err, mmsyserrNomem):
+				continue
+			case errors.Is(err, windows.ERROR_NOT_FOUND):
+				// This error can happen when e.g. a new HDMI connection is detected (#51).
+				// TODO: Retry later.
 			}
-			// TODO: Treat the error corretly
-			panic(fmt.Errorf("oto: Queueing the header failed: %v", err))
+			c.err.TryStore(fmt.Errorf("oto: Queueing the header failed: %v", err))
 		}
 		return
 	}

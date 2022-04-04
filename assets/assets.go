@@ -3,6 +3,7 @@ package assets
 import (
 	"bytes"
 	_ "embed"
+	"github.com/hajimehoshi/ebiten/v2/audio"
 	"image"
 	_ "image/png"
 	"io"
@@ -65,7 +66,11 @@ var ChipStrength *ebiten.Image
 
 //go:embed BackgroundMusic.mp3
 var backgroundMusic_mp3 []byte
-var BackgroundMusic io.Reader
+var BackgroundMusic io.ReadSeeker
+
+//go:embed octopus-enemi.png
+var octopusEnemi_png []byte
+var OctopusEnemi *ebiten.Image
 
 // load loads the image asset as a ebiten.Image pointer.
 func load(b []byte) *ebiten.Image {
@@ -76,12 +81,16 @@ func load(b []byte) *ebiten.Image {
 	return ebiten.NewImageFromImage(img)
 }
 
-func loadMP3(b []byte) (r io.Reader) {
-	r, err := mp3.DecodeWithSampleRate(SampleRate, bytes.NewReader(b))
+func loadMP3(b []byte, infinite bool) io.ReadSeeker {
+	m, err := mp3.DecodeWithSampleRate(SampleRate, bytes.NewReader(b))
 	if err != nil {
 		panic(err)
 	}
-	return r
+
+	if infinite {
+		return audio.NewInfiniteLoop(m, int64(len(b)))
+	}
+	return m
 }
 
 func init() {
@@ -100,5 +109,7 @@ func init() {
 	ChipStrength = load(chipStrength_png)
 	ChipSpeed = load(chipSpeed_png)
 
-	BackgroundMusic = loadMP3(backgroundMusic_mp3)
+	OctopusEnemi = load(octopusEnemi_png)
+
+	BackgroundMusic = loadMP3(backgroundMusic_mp3, true)
 }

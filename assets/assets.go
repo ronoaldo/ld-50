@@ -64,6 +64,10 @@ var ChipStrength *ebiten.Image
 var backgroundMusic_mp3 []byte
 var BackgroundMusic io.ReadSeeker
 
+//go:embed octopus-enemi.png
+var octopusEnemi_png []byte
+var OctopusEnemi *ebiten.Image
+
 // load loads the image asset as a ebiten.Image pointer.
 func load(b []byte) *ebiten.Image {
 	img, _, err := image.Decode(bytes.NewReader(b))
@@ -99,6 +103,8 @@ func init() {
 	ChipLife = load(chipLife_png)
 	ChipStrength = load(chipStrength_png)
 	ChipSpeed = load(chipSpeed_png)
+
+	OctopusEnemi = load(octopusEnemi_png)
 
 	BackgroundMusic = loadMP3(backgroundMusic_mp3, true)
 }

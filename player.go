@@ -21,7 +21,7 @@ func NewPlayer(g *Game) *Player {
 		Sprite: assets.BlueL1,
 	})
 	p.inv.AddDroid(&Droid{
-		Name:   "Blue Lvl 2",
+		Name:   "Octopus",
 		Level:  2,
 		Sprite: assets.OctopusEnemi,
 	})

@@ -3,10 +3,11 @@ package assets
 import (
 	"bytes"
 	_ "embed"
-	"github.com/hajimehoshi/ebiten/v2/audio"
 	"image"
 	_ "image/png"
 	"io"
+
+	"github.com/hajimehoshi/ebiten/v2/audio"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/audio/mp3"
@@ -27,6 +28,10 @@ var InventoryScreen *ebiten.Image
 //go:embed BattleScreen.png
 var battleScreen_png []byte
 var BattleScreen *ebiten.Image
+
+//go:embed UIDroidSelector.png
+var uIDroidSelector_png []byte
+var UIDroidSelector *ebiten.Image
 
 //go:embed BlueL1.png
 var blueL1_png []byte
@@ -97,6 +102,7 @@ func init() {
 	Title = load(title_png)
 	InventoryScreen = load(inventoryScreen_png)
 	BattleScreen = load(battleScreen_png)
+	UIDroidSelector = load(uIDroidSelector_png)
 
 	BlueL1 = load(blueL1_png)
 	BlueL2 = load(blueL2_png)

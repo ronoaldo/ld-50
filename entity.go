@@ -11,12 +11,13 @@ import (
 var TextureSize = 3 * 64
 
 type Entity struct {
-	name    string
-	texture *ebiten.Image
+	name string
 
-	invisible   bool
 	tickCounter int
+	invisible   bool
+	skipInput   bool
 
+	texture      *ebiten.Image
 	frameCount   int
 	currentFrame int
 
@@ -40,12 +41,22 @@ func NewEntity(name string, texture *ebiten.Image) *Entity {
 }
 
 func (e *Entity) Update() {
+	if e.skipInput {
+		return
+	}
+
 	// Move with mouse
 	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
 		x, y := ebiten.CursorPosition()
 		log.Printf("Mouse pressed at (%v,%v)", x, y)
-		e.x = float64(x)
-		e.y = float64(y)
+		e.x = float64(x) - float64(TextureSize)/2
+		e.y = float64(y) - float64(TextureSize)/2
+		if e.x < 0 {
+			e.x = 0
+		}
+		if e.y < 0 {
+			e.y = 0
+		}
 	}
 	// Move with arrows
 	if ebiten.IsKeyPressed(ebiten.KeyArrowLeft) {

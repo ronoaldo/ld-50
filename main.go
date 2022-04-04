@@ -39,10 +39,14 @@ type Game struct {
 
 	player   *Player
 	entities []*Entity
+
+	droidSelector *Entity
+	selectedDroid int
 }
 
 func NewGame() (g *Game, err error) {
 	g = &Game{}
+
 	g.audioContext = audio.NewContext(assets.SampleRate)
 	g.audioPlayer, err = g.audioContext.NewPlayer(assets.BackgroundMusic)
 	if err != nil {
@@ -50,7 +54,13 @@ func NewGame() (g *Game, err error) {
 	}
 	g.audioPlayer.SetVolume(0.05)
 	g.audioPlayer.Play()
+
 	g.player = NewPlayer(g)
+
+	g.droidSelector = NewEntity("droidSelector", assets.UIDroidSelector)
+	g.droidSelector.invisible = true
+	g.droidSelector.skipInput = true
+	g.entities = append(g.entities, g.droidSelector)
 
 	return
 }
@@ -59,10 +69,17 @@ func (g *Game) Update() error {
 	// TODO(ronoaldo): overflow??
 	g.tickCounter++
 
+	for _, e := range g.entities {
+		e.Update()
+	}
+
 	switch g.screen {
 	case GameScreenTitle:
 		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 			g.screen = GameScreenInventory
+			g.droidSelector.x = 39
+			g.droidSelector.y = 189
+			g.showEntity("droidSelector")
 		}
 		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
 			return gameExitError
@@ -71,10 +88,32 @@ func (g *Game) Update() error {
 		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 			g.screen = GameScreenBattle
 			g.makeEntitiesVisible(false)
+
+			d := g.player.inv.droids[g.selectedDroid]
+			d.e.x = 286.0
+			d.e.y = 668.0
+			d.e.invisible = false
 		}
 		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
 			g.screen = GameScreenTitle
 			g.makeEntitiesVisible(false)
+		}
+		if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
+			x, y := ebiten.CursorPosition()
+			if x >= 39 && x <= 1260 && y >= 189 && y <= 380 {
+				cursor := image.Pt(x, y)
+				unitx, unity := 39, 189
+				for i := 0; i < len(g.player.inv.droids); i++ {
+					r := image.Rect(unitx, unity, unitx+192, unity+192)
+					if cursor.In(r) {
+						// Select this slot
+						g.droidSelector.x = float64(r.Min.X)
+						g.droidSelector.y = float64(r.Min.Y)
+						g.selectedDroid = i
+					}
+					unitx += 192 + 15 // size + spacing
+				}
+			}
 		}
 	case GameScreenBattle:
 		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
@@ -83,16 +122,20 @@ func (g *Game) Update() error {
 		}
 	}
 
-	for _, e := range g.entities {
-		e.Update()
-	}
-
 	return nil
 }
 
 func (g *Game) makeEntitiesVisible(visible bool) {
 	for _, e := range g.entities {
 		e.invisible = !visible
+	}
+}
+
+func (g *Game) showEntity(name string) {
+	for _, e := range g.entities {
+		if e.name == name {
+			e.invisible = false
+		}
 	}
 }
 
@@ -139,6 +182,7 @@ func (g *Game) BattleScreen(screen *ebiten.Image) {
 	screen.DrawImage(assets.BattleScreen, nil)
 
 	// Draw current selected droid
+
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {

@@ -42,6 +42,7 @@ type context struct {
 	cond *sync.Cond
 
 	players *players
+	err     atomicError
 }
 
 var theContext *context
@@ -79,9 +80,8 @@ func newContext(sampleRate, channelNum, bitDepthInBytes int) (*context, chan str
 	go func() {
 		buf32 := make([]float32, int(periodSize)*c.channelNum)
 		for {
-			if err := c.readAndWrite(buf32); err != nil {
-				// TODO: Handle errors correctly.
-				panic(err)
+			if !c.readAndWrite(buf32) {
+				return
 			}
 		}
 	}()
@@ -126,17 +126,17 @@ func (c *context) alsaPcmHwParams(sampleRate, channelNum int, bufferSize, period
 	return nil
 }
 
-func (c *context) readAndWrite(buf32 []float32) error {
+func (c *context) readAndWrite(buf32 []float32) bool {
 	c.cond.L.Lock()
 	defer c.cond.L.Unlock()
 
-	for c.suspended {
+	for c.suspended && c.err.Load() == nil {
 		c.cond.Wait()
 	}
-
-	for i := range buf32 {
-		buf32[i] = 0
+	if c.err.Load() != nil {
+		return false
 	}
+
 	c.players.read(buf32)
 
 	for len(buf32) > 0 {
@@ -144,23 +144,29 @@ func (c *context) readAndWrite(buf32 []float32) error {
 		if n == -C.EPIPE {
 			// Underrun or overrun occurred.
 			if err := C.snd_pcm_prepare(c.handle); err < 0 {
-				return alsaError(err)
+				c.err.TryStore(alsaError(err))
+				return false
 			}
 			continue
 		}
 		if n < 0 {
-			return alsaError(C.int(n))
+			c.err.TryStore(alsaError(C.int(n)))
+			return false
 		}
 		buf32 = buf32[int(n)*c.channelNum:]
 	}
-	return nil
+	return true
 }
 
 func (c *context) Suspend() error {
 	c.cond.L.Lock()
 	defer c.cond.L.Unlock()
-	c.suspended = true
 
+	if err := c.err.Load(); err != nil {
+		return err.(error)
+	}
+
+	c.suspended = true
 	if c.supportsPause {
 		if err := C.snd_pcm_pause(c.handle, 1); err < 0 {
 			return alsaError(err)
@@ -177,6 +183,11 @@ func (c *context) Suspend() error {
 func (c *context) Resume() error {
 	c.cond.L.Lock()
 	defer c.cond.L.Unlock()
+
+	if err := c.err.Load(); err != nil {
+		return err.(error)
+	}
+
 	defer func() {
 		c.suspended = false
 		c.cond.Signal()
@@ -202,6 +213,13 @@ try:
 			return nil
 		}
 		return alsaError(err)
+	}
+	return nil
+}
+
+func (c *context) Err() error {
+	if err := c.err.Load(); err != nil {
+		return err.(error)
 	}
 	return nil
 }

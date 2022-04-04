@@ -16,6 +16,7 @@ package oto
 
 import (
 	"io"
+	"sync"
 )
 
 // Context is the main object in Oto. It interacts with the audio drivers.
@@ -64,6 +65,13 @@ func (c *Context) Suspend() error {
 // Resume is concurrent-safe.
 func (c *Context) Resume() error {
 	return c.context.Resume()
+}
+
+// Err returns the current error.
+//
+// Err is concurrent-safe.
+func (c *Context) Err() error {
+	return c.context.Err()
 }
 
 // NewContext creates a new context, that creates and holds ready-to-use Player objects,
@@ -139,4 +147,23 @@ func (c *context) oneBufferSize() int {
 func (c *context) maxBufferSize() int {
 	// The number of underlying buffers should be 2.
 	return c.oneBufferSize() * 2
+}
+
+type atomicError struct {
+	err error
+	m   sync.Mutex
+}
+
+func (a *atomicError) TryStore(err error) {
+	a.m.Lock()
+	defer a.m.Unlock()
+	if a.err == nil {
+		a.err = err
+	}
+}
+
+func (a *atomicError) Load() error {
+	a.m.Lock()
+	defer a.m.Unlock()
+	return a.err
 }

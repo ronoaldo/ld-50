@@ -8,7 +8,6 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
-
 	"github.com/ronoaldo/ld-50/assets"
 )
 
@@ -48,7 +47,7 @@ func NewGame() (g *Game, err error) {
 	if err != nil {
 		return nil, err
 	}
-	g.audioPlayer.SetVolume(0.3)
+	g.audioPlayer.SetVolume(0.2)
 	g.audioPlayer.Play()
 	g.player = NewPlayer(g)
 

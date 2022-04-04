@@ -5,7 +5,10 @@
             "type": "shell",
             "label": "goGenerate",
             "command": "go",
-            "args": ["generate", "./..."]
+            "args": ["generate", "./..."],
+            "presentation": {
+                "reveal": "silent"
+            }
         }
     ]
 }

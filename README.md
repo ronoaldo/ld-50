@@ -17,17 +17,11 @@ skills and your Droid from there.
 - [ ] Game Mechanics
     - [x] Start Game with title screen
         - [x] Exit with ESC key
-    - [ ] Show player inventory
+    - [x] Show player inventory
         - [x] Show inventory screen with ENTER key
         - [x] Go back from inventory to Title when ESC key is pressed
         - [x] Show all droids the player has unlocked
-        - [ ] Show all chips the player has unlocked
-    - [ ] Character evolution
-        - [ ] Blue starting droid give to player
-        - [ ] Droids can upgrade by adding up to 6 Chips (runes)
-        - [ ] Chips improve stats and the overall Droid power
-        - [ ] Each unit has 3 optional skills and 1 passive
-        - [ ] Each skill has a cooldown that requires eletricity to trigger
+        - [x] Show all chips the player has unlocked
     - [ ] Battle Mecanics
         - [ ] PvE Mode (Unit upgrades, story mode)
             - [ ] First phase - 1x1 unofficial battles
@@ -39,10 +33,16 @@ skills and your Droid from there.
                 - [ ] 3 characters for each party
                 - [ ] Passive skills from all party members
                 - [ ] 20 rounds limit per battle
+    - [ ] Character evolution
+        - [ ] Blue starting droid give to player
+        - [ ] Droids can upgrade by adding up to 6 Chips (runes)
+        - [ ] Chips improve stats and the overall Droid power
+        - [ ] Each unit has 3 optional skills and 1 passive
+        - [ ] Each skill has a cooldown that requires eletricity to trigger
 - [ ] Artwork
     - [x] Game Title Screen
-    - [ ] Each droid is represented as a unit in the player inventory
-    - [ ] Droids will have improving look as they are upgraded
+    - [x] Each droid is represented as a unit in the player inventory
+    - [x] Droids will have improving look as they are upgraded
     - [ ] Droid rarity is visible as the droid portrait decoration
     - [ ] Pixel Art or 3D Art? (Each skill move will be the charm of the game, nice animations effects)
 - [ ] Sound

@@ -24,6 +24,7 @@ type GameScreen int
 var (
 	GameScreenTitle     GameScreen = 0
 	GameScreenInventory GameScreen = 1
+	GameScreenBattle    GameScreen = 2
 )
 
 var (
@@ -49,7 +50,7 @@ func NewGame() (g *Game, err error) {
 		return nil, err
 	}
 	g.audioPlayer.SetVolume(0.3)
-	g.audioPlayer.Play()
+	// g.audioPlayer.Play()
 	g.player = NewPlayer(g)
 
 	return
@@ -59,23 +60,27 @@ func (g *Game) Update() error {
 	// TODO(ronoaldo): overflow??
 	g.tickCounter++
 
-	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
-		x, y := ebiten.CursorPosition()
-		log.Printf("Mouse pressed at (%v,%v)", x, y)
-	}
-
-	// ESC
-	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-		if g.screen == GameScreenInventory {
-			g.screen = GameScreenTitle
-		} else {
+	switch g.screen {
+	case GameScreenTitle:
+		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+			g.screen = GameScreenInventory
+		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
 			return gameExitError
 		}
-	}
-
-	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
-		if g.screen == GameScreenTitle {
-			g.screen = GameScreenInventory
+	case GameScreenInventory:
+		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+			g.screen = GameScreenBattle
+			g.makeEntitiesVisible(false)
+		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+			g.screen = GameScreenTitle
+			g.makeEntitiesVisible(false)
+		}
+	case GameScreenBattle:
+		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+			g.screen = GameScreenTitle
+			g.makeEntitiesVisible(false)
 		}
 	}
 
@@ -86,31 +91,34 @@ func (g *Game) Update() error {
 	return nil
 }
 
+func (g *Game) makeEntitiesVisible(visible bool) {
+	for _, e := range g.entities {
+		e.invisible = !visible
+	}
+}
+
 func (g *Game) Draw(screen *ebiten.Image) {
 	switch g.screen {
 	case GameScreenTitle:
 		g.TitleScreen(screen)
 	case GameScreenInventory:
 		g.InventoryScreen(screen)
+	case GameScreenBattle:
+		g.BattleScreen(screen)
 	}
 
+	// Draw visible entities
 	for _, e := range g.entities {
 		e.Draw(screen)
 	}
 }
 
 func (g *Game) TitleScreen(screen *ebiten.Image) {
-	op := &ebiten.DrawImageOptions{
-		Filter: ebiten.FilterLinear,
-	}
-	screen.DrawImage(assets.Title, op)
+	screen.DrawImage(assets.Title, nil)
 }
 
 func (g *Game) InventoryScreen(screen *ebiten.Image) {
-	op := &ebiten.DrawImageOptions{
-		Filter: ebiten.FilterLinear,
-	}
-	screen.DrawImage(assets.InventoryBackground, op)
+	screen.DrawImage(assets.InventoryScreen, nil)
 
 	// TODO: convert hard-coded values into constants
 	x, y := 39, 189
@@ -126,6 +134,12 @@ func (g *Game) InventoryScreen(screen *ebiten.Image) {
 		chip.e.invisible = false
 		x += 192 + 30 // chip slot width + offset
 	}
+}
+
+func (g *Game) BattleScreen(screen *ebiten.Image) {
+	screen.DrawImage(assets.BattleScreen, nil)
+
+	// Draw current selected droid
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {

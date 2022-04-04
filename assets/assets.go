@@ -15,13 +15,17 @@ var SampleRate int = 44100
 
 //go:generate go run ../scripts/generate-assets.go
 
-//go:embed Title.png
+//go:embed TitleScreen.png
 var title_png []byte
 var Title *ebiten.Image
 
-//go:embed InventoryBackground.png
-var inventoryBackground_png []byte
-var InventoryBackground *ebiten.Image
+//go:embed InventoryScreen.png
+var inventoryScreen_png []byte
+var InventoryScreen *ebiten.Image
+
+//go:embed BattleScreen.png
+var battleScreen_png []byte
+var BattleScreen *ebiten.Image
 
 //go:embed BlueL1.png
 var blueL1_png []byte
@@ -82,7 +86,8 @@ func loadMP3(b []byte) (r io.Reader) {
 
 func init() {
 	Title = load(title_png)
-	InventoryBackground = load(inventoryBackground_png)
+	InventoryScreen = load(inventoryScreen_png)
+	BattleScreen = load(battleScreen_png)
 
 	BlueL1 = load(blueL1_png)
 	BlueL2 = load(blueL2_png)

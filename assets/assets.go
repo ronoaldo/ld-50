@@ -18,7 +18,7 @@ import (
 
 var SampleRate int = 44100
 
-//go:generate go run ../scripts/generate-assets.go
+//go:generate go run ../cmd/genassets/main.go
 
 //go:embed TitleScreen.png
 var title_png []byte

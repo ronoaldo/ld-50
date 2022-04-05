@@ -47,12 +47,13 @@ skills and your Droid from there.
     - [ ] Pixel Art or 3D Art? (Each skill move will be the charm of the game, nice animations effects)
 - [ ] Sound
     - [ ] Droid sounds will be motors, lasers and metal sfx
-    - [ ] BGM will be techno during battles, easy going on game screns
-        - [ ] Intro BGM
+    - [x] BGM will be techno during battles, easy going on game screns
+        - [x] Intro BGM
         - [x] Battle BGM
 - [ ] Infra
-    - [ ] Hosting (Cloud Run)
-    - [ ] Automate deployment using Github Actions
+    - [x] Hosting (Cloud Run)
+    - [x] Automate deployment using Github Actions
+    - [ ] Cross platform build
 
 ## Testing out
 

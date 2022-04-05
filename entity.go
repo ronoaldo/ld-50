@@ -52,7 +52,7 @@ func (e *Entity) Update() {
 	// Move with mouse
 	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
 		x, y := ebiten.CursorPosition()
-		log.Printf("Mouse pressed at (%v,%v)", x, y)
+		log.Printf("[%s] mouse pressed at (%v,%v)", e.name, x, y)
 		e.x = float64(x) - float64(TextureSize)/2
 		e.y = float64(y) - float64(TextureSize)/2
 		if e.x < 0 {

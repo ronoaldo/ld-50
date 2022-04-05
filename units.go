@@ -57,6 +57,8 @@ type Droid struct {
 
 	Sprite *ebiten.Image
 	e      *Entity
+
+	Skills [3]Skill
 }
 
 func (d *Droid) Stats() Stats {
@@ -91,14 +93,28 @@ type SkillEffect func(p, e *BattleUnit)
 type Skill struct {
 	Name   string
 	Effect SkillEffect
+	Sprite *ebiten.Image
 }
 
 var (
-	AttackSkill = Skill{
-		Name: "Attack",
+	BasicAttackSkill = Skill{
+		Name: "Basic Attack",
 		Effect: func(p, e *BattleUnit) {
 			str := p.Stats.Strengh
 			e.Stats.HP -= str
+		},
+	}
+	UltimateAttackSkill = Skill{
+		Name: "Ultimate Attack",
+		Effect: func(p, e *BattleUnit) {
+			str := p.Stats.Strengh
+			e.Stats.HP -= 2 * str
+		},
+	}
+	HealSkill = Skill{
+		Name: "Heal Attack",
+		Effect: func(p, e *BattleUnit) {
+			p.Stats.HP += p.Stats.Strengh
 		},
 	}
 )

@@ -2,18 +2,20 @@ package assets
 
 import (
 	"bytes"
-	_ "embed"
 	"image"
-	_ "image/png"
 	"io"
 	"io/ioutil"
 	"log"
 	"time"
 
-	"github.com/hajimehoshi/ebiten/v2/audio"
+	_ "embed"
+	_ "image/png"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/hajimehoshi/ebiten/v2/audio/mp3"
+	"golang.org/x/image/font"
+	"golang.org/x/image/font/opentype"
 )
 
 var SampleRate int = 44100
@@ -35,6 +37,10 @@ var BattleScreen *ebiten.Image
 //go:embed UIDroidSelector.png
 var uIDroidSelector_png []byte
 var UIDroidSelector *ebiten.Image
+
+//go:embed fonts/RobotoMono-Regular.ttf
+var rotoboMonoRegular_ttf []byte
+var RobotoMonoRegular font.Face
 
 //go:embed BlueL1.png
 var blueL1_png []byte
@@ -111,11 +117,31 @@ func loadMP3(b []byte, infinite bool) io.ReadSeeker {
 	return m
 }
 
+func loadFont(font []byte) font.Face {
+	tt, err := opentype.Parse(font)
+	if err != nil {
+		panic(err)
+	}
+
+	face, err := opentype.NewFace(tt, &opentype.FaceOptions{
+		Size: 32,
+		DPI:  72,
+	})
+
+	if err != nil {
+		panic(err)
+	}
+
+	return face
+}
+
 func init() {
 	Title = load(title_png)
 	InventoryScreen = load(inventoryScreen_png)
 	BattleScreen = load(battleScreen_png)
 	UIDroidSelector = load(uIDroidSelector_png)
+
+	RobotoMonoRegular = loadFont(rotoboMonoRegular_ttf)
 
 	BlueL1 = load(blueL1_png)
 	BlueL2 = load(blueL2_png)

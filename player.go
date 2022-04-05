@@ -19,11 +19,26 @@ func NewPlayer(g *Game) *Player {
 		Name:   "Blue Lvl 1",
 		Level:  1,
 		Sprite: assets.BlueL1,
+		BaseStats: Stats{
+			HP:      100,
+			Strengh: 20,
+			Speed:   10,
+		},
+		Skills: [3]Skill{
+			BasicAttackSkill,
+			HealSkill,
+			UltimateAttackSkill,
+		},
 	})
 	p.inv.AddDroid(&Droid{
 		Name:   "Octopus",
 		Level:  2,
 		Sprite: assets.OctopusEnemi,
+		BaseStats: Stats{
+			HP:      100,
+			Strengh: 20,
+			Speed:   10,
+		},
 	})
 	p.inv.AddChip(NewChip())
 	p.inv.AddChip(NewChip())

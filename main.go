@@ -2,12 +2,15 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"image"
+	"image/color"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/hajimehoshi/ebiten/v2/text"
 	"github.com/ronoaldo/ld-50/assets"
 )
 
@@ -40,8 +43,12 @@ type Game struct {
 	player   *Player
 	entities []*Entity
 
-	droidSelector *Entity
+	inputSelector *Entity
 	selectedDroid int
+	selectedSkill int
+
+	playerUnit *BattleUnit
+	enemyUnit  *BattleUnit
 
 	skipInput bool
 }
@@ -59,10 +66,10 @@ func NewGame() (g *Game, err error) {
 
 	g.player = NewPlayer(g)
 
-	g.droidSelector = NewEntity("droidSelector", assets.UIDroidSelector)
-	g.droidSelector.invisible = true
-	g.droidSelector.skipInput = true
-	g.entities = append(g.entities, g.droidSelector)
+	g.inputSelector = NewEntity("inputSelector", assets.UIDroidSelector)
+	g.inputSelector.invisible = true
+	g.inputSelector.skipInput = true
+	g.entities = append(g.entities, g.inputSelector)
 
 	return
 }
@@ -79,9 +86,9 @@ func (g *Game) Update() error {
 		}
 		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 			g.screen = GameScreenInventory
-			g.droidSelector.x = 39
-			g.droidSelector.y = 189
-			g.showEntity("droidSelector")
+			g.inputSelector.x = 39
+			g.inputSelector.y = 189
+			g.showEntity("inputSelector")
 		}
 		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
 			return gameExitError
@@ -90,11 +97,22 @@ func (g *Game) Update() error {
 		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 			g.screen = GameScreenBattle
 			g.makeAllEntitiesVisible(false)
+			g.showEntity("inputSelector")
+			g.inputSelector.x = 773
+			g.inputSelector.y = 817
 
 			d := g.player.inv.droids[g.selectedDroid]
 			d.e.x = 286.0
 			d.e.y = 668.0
 			d.e.invisible = false
+			d.e.skipInput = true
+
+			g.playerUnit = &BattleUnit{
+				Name:   d.Name,
+				Stats:  d.Stats(),
+				Skills: d.Skills,
+			}
+
 			for _, e := range g.entities {
 				e.Update()
 			}
@@ -110,14 +128,13 @@ func (g *Game) Update() error {
 					r := image.Rect(posx, posy, posx+192, posy+192)
 					if cursor.In(r) {
 						// Select this slot
-						g.droidSelector.x = float64(r.Min.X)
-						g.droidSelector.y = float64(r.Min.Y)
+						g.inputSelector.x = float64(r.Min.X)
+						g.inputSelector.y = float64(r.Min.Y)
 						g.selectedDroid = i
 					}
 					posx += 192 + 15 // size + spacing
 				}
 			}
-
 		} else {
 			// Update inventoy item positions to display on inventory screen
 			x, y := 39, 189
@@ -141,6 +158,34 @@ func (g *Game) Update() error {
 		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
 			g.screen = GameScreenTitle
 			g.makeAllEntitiesVisible(false)
+		} else if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
+			x, y := ebiten.CursorPosition()
+			if x >= 760 && x <= 1440 && y >= 800 && y <= 1100 {
+				cursor := image.Pt(x, y)
+				posx, posy := 776, 820
+				for i := 0; i < 3; i++ {
+					r := image.Rect(posx, posy, posx+192, posy+192)
+					if cursor.In(r) {
+						// Select this slot
+						g.inputSelector.x = float64(r.Min.X)
+						g.inputSelector.y = float64(r.Min.Y)
+						g.selectedSkill = i
+					}
+					posx += 192 + 15 // size + spacing
+				}
+			}
+		} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
+			if g.selectedSkill > 0 {
+				// Select this slot
+				g.inputSelector.x -= (192 + 15)
+				g.selectedSkill -= 1
+			}
+		} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
+			if g.selectedSkill < 2 {
+				// Select this slot
+				g.inputSelector.x += (192 + 15)
+				g.selectedSkill += 1
+			}
 		}
 		for _, e := range g.entities {
 			e.Update()
@@ -172,6 +217,10 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		screen.DrawImage(assets.InventoryScreen, nil)
 	case GameScreenBattle:
 		screen.DrawImage(assets.BattleScreen, nil)
+
+		// Draw Player HP
+		hpText := fmt.Sprintf("HP: %d\n%s", g.playerUnit.Stats.HP, g.player.game.playerUnit.Name)
+		text.Draw(screen, hpText, assets.RobotoMonoRegular, 32, 64, color.White)
 	}
 
 	// Draw visible entities

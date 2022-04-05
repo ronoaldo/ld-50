@@ -36,19 +36,24 @@ func game(w http.ResponseWriter, r *http.Request) {
 
 var html = `
 <!DOCTYPE html>
-<script src="wasm_exec.js"></script>
-<script>
-// Polyfill
-if (!WebAssembly.instantiateStreaming) {
-  WebAssembly.instantiateStreaming = async (resp, importObject) => {
-    const source = await (await resp).arrayBuffer();
-    return await WebAssembly.instantiate(source, importObject);
-  };
-}
-
-const go = new Go();
-WebAssembly.instantiateStreaming(fetch("ld-50.wasm"), go.importObject).then(result => {
-  go.run(result.instance);
-});
-</script>
+<head>
+	<title>LD-50 | Droid Battles</title>
+</head>
+<body>
+	<h1>Loading ...</h1>
+	<script src="wasm_exec.js"></script>
+	<script>
+	// Polyfill
+	if (!WebAssembly.instantiateStreaming) {
+	WebAssembly.instantiateStreaming = async (resp, importObject) => {
+		const source = await (await resp).arrayBuffer();
+		return await WebAssembly.instantiate(source, importObject);
+	};
+	}
+	const go = new Go();
+	WebAssembly.instantiateStreaming(fetch("ld-50.wasm"), go.importObject).then(result => {
+	go.run(result.instance);
+	});
+	</script>
+</body>
 `

@@ -2,3 +2,5 @@
 __debug_bin
 *.bak
 ld-50
+cmd/web/*.wasm
+cmd/web/wasm_exec.js

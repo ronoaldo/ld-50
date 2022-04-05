@@ -50,6 +50,9 @@ skills and your Droid from there.
     - [ ] BGM will be techno during battles, easy going on game screns
         - [ ] Intro BGM
         - [x] Battle BGM
+- [ ] Infra
+    - [ ] Hosting (Cloud Run)
+    - [ ] Automate deployment using Github Actions
 
 ## Testing out
 

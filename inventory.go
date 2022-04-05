@@ -57,11 +57,20 @@ type Chip struct {
 func NewChip() *Chip {
 	c := &Chip{}
 	c.ID = uuid.New()
+
+	// Randomize new chip stats player can choose
 	c.StatModifier.HP = rand.Intn(11)
 	c.StatModifier.Strengh = rand.Intn(11)
 	c.StatModifier.Speed = rand.Intn(11)
-	// TODO(ronoaldo): randomize chip sprite
-	c.Sprite = assets.ChipSpeed
+
+	// Randomize chip graphics
+	if c.StatModifier.HP > c.StatModifier.Speed && c.StatModifier.HP > c.StatModifier.Strengh {
+		c.Sprite = assets.ChipLife
+	} else if c.StatModifier.Strengh > c.StatModifier.HP && c.StatModifier.Strengh > c.StatModifier.Speed {
+		c.Sprite = assets.ChipStrength
+	} else {
+		c.Sprite = assets.ChipSpeed
+	}
 	return c
 }
 

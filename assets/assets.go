@@ -6,6 +6,9 @@ import (
 	"image"
 	_ "image/png"
 	"io"
+	"io/ioutil"
+	"log"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2/audio"
 
@@ -73,6 +76,10 @@ var ChipStrength *ebiten.Image
 var backgroundMusic_mp3 []byte
 var BackgroundMusic io.ReadSeeker
 
+//go:embed BackgroundMusic2.mp3
+var backgroundMusic2_mp3 []byte
+var BackgroundMusic2 io.ReadSeeker
+
 //go:embed octopus-enemi.png
 var octopusEnemi_png []byte
 var OctopusEnemi *ebiten.Image
@@ -87,14 +94,20 @@ func load(b []byte) *ebiten.Image {
 }
 
 func loadMP3(b []byte, infinite bool) io.ReadSeeker {
+	start := time.Now()
 	m, err := mp3.DecodeWithSampleRate(SampleRate, bytes.NewReader(b))
 	if err != nil {
 		panic(err)
 	}
 
 	if infinite {
-		return audio.NewInfiniteLoop(m, int64(len(b)))
+		// We need to calculate the length after decoding.
+		d, _ := ioutil.ReadAll(m)
+		// Reset
+		m.Seek(0, io.SeekStart)
+		return audio.NewInfiniteLoop(m, int64(len(d)))
 	}
+	log.Printf("Loaded MP3 (%d bytes) took %v", len(b), time.Since(start))
 	return m
 }
 
@@ -118,4 +131,5 @@ func init() {
 	OctopusEnemi = load(octopusEnemi_png)
 
 	BackgroundMusic = loadMP3(backgroundMusic_mp3, true)
+	BackgroundMusic2 = loadMP3(backgroundMusic2_mp3, true)
 }

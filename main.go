@@ -42,6 +42,8 @@ type Game struct {
 
 	droidSelector *Entity
 	selectedDroid int
+
+	skipInput bool
 }
 
 func NewGame() (g *Game, err error) {
@@ -67,13 +69,14 @@ func NewGame() (g *Game, err error) {
 
 func (g *Game) Update() error {
 	g.tickCounter++
-
 	for _, e := range g.entities {
-		e.Update()
+		e.Tinker()
 	}
-
 	switch g.screen {
 	case GameScreenTitle:
+		for _, e := range g.entities {
+			e.Update()
+		}
 		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 			g.screen = GameScreenInventory
 			g.droidSelector.x = 39
@@ -92,6 +95,9 @@ func (g *Game) Update() error {
 			d.e.x = 286.0
 			d.e.y = 668.0
 			d.e.invisible = false
+			for _, e := range g.entities {
+				e.Update()
+			}
 		} else if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
 			g.screen = GameScreenTitle
 			g.makeAllEntitiesVisible(false)
@@ -111,6 +117,7 @@ func (g *Game) Update() error {
 					posx += 192 + 15 // size + spacing
 				}
 			}
+
 		} else {
 			// Update inventoy item positions to display on inventory screen
 			x, y := 39, 189
@@ -126,11 +133,17 @@ func (g *Game) Update() error {
 				chip.e.invisible = false
 				x += 192 + 30 // chip slot width + offset
 			}
+			for _, e := range g.entities {
+				e.Update()
+			}
 		}
 	case GameScreenBattle:
 		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
 			g.screen = GameScreenTitle
 			g.makeAllEntitiesVisible(false)
+		}
+		for _, e := range g.entities {
+			e.Update()
 		}
 	}
 

@@ -40,6 +40,10 @@ func NewEntity(name string, texture *ebiten.Image) *Entity {
 	return e
 }
 
+func (e *Entity) Tinker() {
+	e.tickCounter++
+}
+
 func (e *Entity) Update() {
 	if e.skipInput {
 		return
@@ -84,7 +88,6 @@ func (e *Entity) Update() {
 		}
 	}
 
-	e.tickCounter++
 }
 
 func (e *Entity) Draw(screen *ebiten.Image) {

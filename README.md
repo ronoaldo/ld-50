@@ -25,7 +25,7 @@ skills and your Droid from there.
     - [ ] Battle Mecanics
         - [ ] PvE Mode (Unit upgrades, story mode)
             - [ ] First phase - 1x1 unofficial battles
-                - [ ] 1 character for each party
+                - [x] 1 character for each party
                 - [x] 3 skills to use each round
                 - [ ] 10 rounds limit per battle
         - [ ] PvP Mode (Arena Battles)
@@ -34,7 +34,7 @@ skills and your Droid from there.
                 - [ ] Passive skills from all party members
                 - [ ] 20 rounds limit per battle
     - [ ] Character evolution
-        - [ ] Blue starting droid give to player
+        - [x] Blue starting droid give to player
         - [ ] Droids can upgrade by adding up to 6 Chips (runes)
         - [ ] Chips improve stats and the overall Droid power
         - [ ] Each unit has 3 optional skills and 1 passive

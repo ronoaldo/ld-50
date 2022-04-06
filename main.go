@@ -6,6 +6,8 @@ import (
 	"image"
 	"image/color"
 	"log"
+	"math/rand"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/audio"
@@ -27,6 +29,7 @@ var (
 	GameScreenTitle     GameScreen = 0
 	GameScreenInventory GameScreen = 1
 	GameScreenBattle    GameScreen = 2
+	GameOverScreen      GameScreen = 3
 )
 
 var (
@@ -47,10 +50,13 @@ type Game struct {
 	selectedDroid int
 	selectedSkill int
 
-	playerUnit *BattleUnit
-	enemyUnit  *BattleUnit
+	playerUnit   *BattleUnit
+	playerTimer  time.Time
+	isPlayerTurn bool
+	enemyUnit    *BattleUnit
+	enemyEntity  *Entity
 
-	skipInput bool
+	gameOver bool
 }
 
 func NewGame() (g *Game, err error) {
@@ -98,17 +104,30 @@ func (g *Game) Update() error {
 			g.screen = GameScreenBattle
 			g.makeAllEntitiesVisible(false)
 			g.showEntity("inputSelector")
-			g.inputSelector.x = 773
+			g.inputSelector.x = 657
 			g.inputSelector.y = 817
 
 			d := g.player.inv.droids[g.selectedDroid]
-			d.e.x = 286.0
-			d.e.y = 668.0
+			d.e.x = 226.0
+			d.e.y = 510.0
 			d.e.invisible = false
 			d.e.skipInput = true
 
 			g.playerUnit = &BattleUnit{
 				Name:   d.Name,
+				Stats:  d.Stats(),
+				Skills: d.Skills,
+			}
+			g.playerTimer = time.Now()
+			g.isPlayerTurn = true
+
+			g.enemyEntity = NewEntity("Enemy", assets.OctopusEnemi)
+			g.enemyEntity.x, g.enemyEntity.y = 1505.0, 513.0
+			g.enemyEntity.skipInput = true
+			g.entities = append(g.entities, g.enemyEntity)
+
+			g.enemyUnit = &BattleUnit{
+				Name:   "Clone Droid",
 				Stats:  d.Stats(),
 				Skills: d.Skills,
 			}
@@ -155,14 +174,20 @@ func (g *Game) Update() error {
 			}
 		}
 	case GameScreenBattle:
+		if g.playerUnit.Stats.HP <= 0 || g.enemyUnit.Stats.HP <= 0 {
+			g.screen = GameOverScreen
+			g.makeAllEntitiesVisible(false)
+			return nil
+		}
+
 		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
 			g.screen = GameScreenTitle
 			g.makeAllEntitiesVisible(false)
 		} else if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
 			x, y := ebiten.CursorPosition()
-			if x >= 760 && x <= 1440 && y >= 800 && y <= 1100 {
+			if x >= 657 && x <= 1440 && y >= 800 && y <= 1100 {
 				cursor := image.Pt(x, y)
-				posx, posy := 776, 820
+				posx, posy := 657, 817
 				for i := 0; i < 3; i++ {
 					r := image.Rect(posx, posy, posx+192, posy+192)
 					if cursor.In(r) {
@@ -187,8 +212,31 @@ func (g *Game) Update() error {
 				g.selectedSkill += 1
 			}
 		}
+
+		// Timer logic
+		if time.Since(g.playerTimer) > 10*time.Second || inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+			// Time expired for player to choose the skill
+			skill := g.playerUnit.Skills[g.selectedSkill]
+			skill.Effect(g.playerUnit, g.enemyUnit)
+			log.Printf("Player action: %s", skill.Name)
+			g.playerTimer = time.Now()
+			g.isPlayerTurn = false
+		} else if !g.isPlayerTurn {
+			// Other player logic
+			// AI of the enemy - choose a random skill
+			skill := g.playerUnit.Skills[rand.Int()%3]
+			skill.Effect(g.enemyUnit, g.playerUnit)
+			log.Printf("Enemy action: %s", skill.Name)
+			g.playerTimer = time.Now()
+			g.isPlayerTurn = true
+		}
+
 		for _, e := range g.entities {
 			e.Update()
+		}
+	case GameOverScreen:
+		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+			g.screen = GameScreenTitle
 		}
 	}
 
@@ -220,7 +268,24 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 		// Draw Player HP
 		hpText := fmt.Sprintf("HP: %d\n%s", g.playerUnit.Stats.HP, g.player.game.playerUnit.Name)
-		text.Draw(screen, hpText, assets.RobotoMonoRegular, 32, 64, color.White)
+		text.Draw(screen, hpText, assets.RobotoMonoRegular, 132, 64, color.White)
+
+		// Draw Enemy HP
+		hpText = fmt.Sprintf("HP: %d\n%s", g.enemyUnit.Stats.HP, g.enemyEntity.name)
+		text.Draw(screen, hpText, assets.RobotoMonoRegular, 1406, 64, color.White)
+
+		// Draw turn timer
+		if !g.gameOver {
+			timerText := fmt.Sprintf("%v", time.Since(g.playerTimer))
+			text.Draw(screen, timerText, assets.RobotoMonoRegular, 798, 130, color.White)
+		}
+	case GameOverScreen:
+		screen.DrawImage(assets.GameOverScreen, nil)
+		result := "You Lost!"
+		if g.playerUnit.Stats.HP > 0 {
+			result = "You won!"
+		}
+		text.Draw(screen, result, assets.RobotoMonoRegular, 863, 718, color.White)
 	}
 
 	// Draw visible entities

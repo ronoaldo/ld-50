@@ -21,6 +21,7 @@ func NewPlayer(g *Game) *Player {
 		Sprite: assets.BlueL1,
 		BaseStats: Stats{
 			HP:      100,
+			MaxHP:   100,
 			Strengh: 20,
 			Speed:   10,
 		},
@@ -36,8 +37,14 @@ func NewPlayer(g *Game) *Player {
 		Sprite: assets.OctopusEnemi,
 		BaseStats: Stats{
 			HP:      100,
+			MaxHP:   100,
 			Strengh: 20,
 			Speed:   10,
+		},
+		Skills: [3]Skill{
+			BasicAttackSkill,
+			HealSkill,
+			UltimateAttackSkill,
 		},
 	})
 	p.inv.AddChip(NewChip())

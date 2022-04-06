@@ -10,9 +10,12 @@ import (
 
 // Unit stats for both player and enemy.
 type Stats struct {
-	HP      int
+	HP    int
+	MaxHP int
+
 	Strengh int
-	Speed   int
+
+	Speed int
 }
 
 // Chip a stat modifier that can be applied to the player/enemy.
@@ -30,15 +33,15 @@ func NewChip() *Chip {
 	c.ID = uuid.New()
 
 	// Randomize new chip stats player can choose
-	c.StatModifier.HP = rand.Intn(11)
+	c.StatModifier.MaxHP = rand.Intn(11)
 	c.StatModifier.Strengh = rand.Intn(11)
 	c.StatModifier.Speed = rand.Intn(11)
 
 	// Randomize chip graphics
-	if c.StatModifier.HP > c.StatModifier.Speed &&
-		c.StatModifier.HP > c.StatModifier.Strengh {
+	if c.StatModifier.MaxHP > c.StatModifier.Speed &&
+		c.StatModifier.MaxHP > c.StatModifier.Strengh {
 		c.Sprite = assets.ChipLife
-	} else if c.StatModifier.Strengh > c.StatModifier.HP &&
+	} else if c.StatModifier.Strengh > c.StatModifier.MaxHP &&
 		c.StatModifier.Strengh > c.StatModifier.Speed {
 		c.Sprite = assets.ChipStrength
 	} else {
@@ -65,12 +68,13 @@ func (d *Droid) Stats() Stats {
 	b := d.BaseStats
 	s := Stats{
 		HP:      b.HP,
+		MaxHP:   b.MaxHP,
 		Strengh: b.Strengh,
 		Speed:   b.Speed,
 	}
 
 	for _, ch := range d.Chips {
-		s.HP += ch.StatModifier.HP
+		s.MaxHP += ch.StatModifier.MaxHP
 		s.Strengh += ch.StatModifier.Strengh
 		s.Speed += ch.StatModifier.Speed
 	}
@@ -115,6 +119,9 @@ var (
 		Name: "Heal Attack",
 		Effect: func(p, e *BattleUnit) {
 			p.Stats.HP += p.Stats.Strengh
+			if p.Stats.HP > p.Stats.MaxHP {
+				p.Stats.HP = p.Stats.MaxHP
+			}
 		},
 	}
 )

@@ -26,7 +26,7 @@ skills and your Droid from there.
         - [ ] PvE Mode (Unit upgrades, story mode)
             - [ ] First phase - 1x1 unofficial battles
                 - [ ] 1 character for each party
-                - [ ] 3 skills to use each round
+                - [x] 3 skills to use each round
                 - [ ] 10 rounds limit per battle
         - [ ] PvP Mode (Arena Battles)
             - [ ] Second phase - 3x3 championship battles

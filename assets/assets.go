@@ -34,6 +34,10 @@ var InventoryScreen *ebiten.Image
 var battleScreen_png []byte
 var BattleScreen *ebiten.Image
 
+//go:embed GameOverScreen.png
+var gameOverScreen_png []byte
+var GameOverScreen *ebiten.Image
+
 //go:embed UIDroidSelector.png
 var uIDroidSelector_png []byte
 var UIDroidSelector *ebiten.Image
@@ -139,6 +143,7 @@ func init() {
 	Title = load(title_png)
 	InventoryScreen = load(inventoryScreen_png)
 	BattleScreen = load(battleScreen_png)
+	GameOverScreen = load(gameOverScreen_png)
 	UIDroidSelector = load(uIDroidSelector_png)
 
 	RobotoMonoRegular = loadFont(rotoboMonoRegular_ttf)
